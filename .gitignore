@@ -1,0 +1,5 @@
+# Ignore compiled python files
+*.pyc
+
+# Ignore api tokens
+set_env.sh
