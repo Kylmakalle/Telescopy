@@ -4,4 +4,4 @@ Telegram Bot that converts Videos and GIFs to [Video Messages](https://telegram.
 
 [@TelescopyBot](https://t.me/TelescopyBot)
 
-![](https://github.com/Kylmakalle/Telescopy-example/blob/master/promo.gif)
+![](https://github.com/Kylmakalle/Telescopy-example/blob/master/promoconverted.gif)
