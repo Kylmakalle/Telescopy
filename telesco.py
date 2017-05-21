@@ -26,8 +26,7 @@ def lang(message):
 
 strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я умею преобразовывать Видео и Гифки в круглые'
                            ' <i>Видеосообщения</i>, просто отправь мне медиафайл.\n\n'
-                           'Не забудь <a href="{}">обновить</a> приложение, или ты не сможешь просматривать'
-                           ' <i>Видеосообщения!</i>',
+                           'Используй команду /help если у тебя есть вопросы.',
                   'error': 'Ой, что-то пошло не так, попоробуй другой файл',
                   'content_error': 'Я поддерживаю только Видео или Гифики!',
                   'text_handler': 'Отправь мне Видео или Гифку',
@@ -40,8 +39,7 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
                   'help': '<a href="http://telegra.ph/Telescopy-FAQ-Ru-05-21-3">FAQ</a>'},
            'en': {'start': 'Greetings, {}!\nI am Telescopy and i can convert your Video or GIF to a round'
                            ' <i>Video Message</i>, just send me your media.\n\n'
-                           'Remember to <a href="{}">update</a> an app first, or you will not be able'
-                           ' to see <i>Video Messages</i>!',
+                           'Use /help command if you have any questions.',
                   'error': 'Ooops, something went wrong, try another file',
                   'content_error': 'I support only Videos and GIFs!',
                   'text_handler': 'Send me Video or GIF',
