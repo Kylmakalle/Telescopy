@@ -36,7 +36,8 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
                   'converting': '<i>Конвертирую</i> <code>{0:.2f}%</code>',
                   'downloading': '<i>Скачиваю файл...</i>',
                   'uploading': '<i>Колдую...</i>',
-                  'webm': 'WebM формат пока не поддерживается 😓'},
+                  'webm': 'WebM формат пока не поддерживается 😓',
+                  'help': '<a href="{http://telegra.ph/Telescopy-FAQ-Ru-05-21}">FAQ</a>'},
            'en': {'start': 'Greetings, {}!\nI am Telescopy and i can convert your Video or GIF to a round'
                            ' <i>Video Message</i>, just send me your media.\n\n'
                            'Remember to <a href="{}">update</a> an app first, or you will not be able'
@@ -49,7 +50,8 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
                   'converting': '<i>Converting</i> <code>{0:.2f}%</code>',
                   'downloading': '<i>Downloading file...</i>',
                   'uploading': '<i>Doing some magic stuff...</i>',
-                  'webm': 'WebMs are currently unsupported 😓'}}
+                  'webm': 'WebMs are currently unsupported 😓',
+                  'help': '<a href="{http://telegra.ph/Telescopy-FAQ-En-05-21}">FAQ</a>'}}
 
 
 def check_size(message):
@@ -79,6 +81,14 @@ def welcome(message):
     task.wait()
 
 
+@bot.message_handler(commands=['help'])
+def welcome(message):
+    task = bot.send_message(message.chat.id, strings[lang(message)]['help'],
+                            parse_mode='HTML', disable_web_page_preview=False)
+    track(botan_token, message.from_user.id, message, '/start')
+    task.wait()
+
+
 @bot.message_handler(content_types=['video', 'document'])
 def converting(message):
     if message.content_type is 'video':
@@ -90,7 +100,7 @@ def converting(message):
                 track(botan_token, message.from_user.id, message, 'Convert')
             except Exception as e:
                 bot.send_message(me, '`{}`'.format(e), parse_mode='Markdown').wait()
-                bot.forward_message(me, message.chat.id, message.message_id).wait() # some debug info
+                bot.forward_message(me, message.chat.id, message.message_id).wait()  # some debug info
                 bot.send_message(message.chat.id, strings[lang(message)]['error']).wait()
                 track(botan_token, message.from_user.id, message, 'Error')
         else:
@@ -163,7 +173,7 @@ def converting(message):
 
 @bot.message_handler(content_types=['text'])
 def text_handler(message):
-    if message.content_type is 'text' and message.text != '/start':
+    if message.content_type is 'text' and message.text != '/start' and message.text != '/help':
         bot.send_message(message.chat.id, strings[lang(message)]['text_handler']).wait()
 
 
