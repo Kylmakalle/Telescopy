@@ -103,7 +103,7 @@ def converting(message):
         else:
             return
 
-    elif message.content_type is 'document' and 'webm' in message.document.mime_type:
+    elif message.content_type is 'document' and message.document.mime_type == 'video/webm':
         if message.from_user.id == me:
             if check_size(message):
                 try:
