@@ -37,7 +37,7 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
                   'downloading': '<i>Скачиваю файл...</i>',
                   'uploading': '<i>Колдую...</i>',
                   'webm': 'WebM формат пока не поддерживается 😓',
-                  'help': '<a href="{http://telegra.ph/Telescopy-FAQ-Ru-05-21}">FAQ</a>'},
+                  'help': '<a href="http://telegra.ph/Telescopy-FAQ-Ru-05-21">FAQ</a>'},
            'en': {'start': 'Greetings, {}!\nI am Telescopy and i can convert your Video or GIF to a round'
                            ' <i>Video Message</i>, just send me your media.\n\n'
                            'Remember to <a href="{}">update</a> an app first, or you will not be able'
@@ -51,7 +51,7 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
                   'downloading': '<i>Downloading file...</i>',
                   'uploading': '<i>Doing some magic stuff...</i>',
                   'webm': 'WebMs are currently unsupported 😓',
-                  'help': '<a href="{http://telegra.ph/Telescopy-FAQ-En-05-21}">FAQ</a>'}}
+                  'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21">FAQ</a>'}}
 
 
 def check_size(message):
