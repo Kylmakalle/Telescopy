@@ -1,3 +1,4 @@
 https://github.com/Kylmakalle/pyTelegramBotAPI/archive/feature-BotAPIV3.zip
 requests
 ujson
+cloudconvert
