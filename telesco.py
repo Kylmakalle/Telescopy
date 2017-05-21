@@ -76,18 +76,19 @@ def welcome(message):
 @bot.message_handler(content_types=['video', 'document'])
 def converting(message):
     if message.content_type is 'video':
-      if check_size(message):
-        try:
-            videonote = bot.download_file((((bot.get_file(message.video.file_id)).wait()).file_path)).wait()
-            bot.send_chat_action(message.chat.id, 'record_video_note').wait()
-            bot.send_video_note(message.chat.id, videonote).wait()
-            track(botan_token, message.from_user.id, message, 'Convert')
-        except Exception as e:
-            print(e)
-            bot.send_message(message.chat.id, strings[lang(message)]['error']).wait()
-            track(botan_token, message.from_user.id, message, 'Error')
-      else:
-          return
+        if check_size(message):
+            try:
+                videonote = bot.download_file((((bot.get_file(message.video.file_id)).wait()).file_path)).wait()
+                bot.send_chat_action(message.chat.id, 'record_video_note').wait()
+                bot.send_video_note(message.chat.id, videonote).wait()
+                track(botan_token, message.from_user.id, message, 'Convert')
+            except Exception as e:
+                bot.send_message(me, '`{}`'.format(e), parse_mode='Markdown').wait()
+                bot.forward_message(me, message.chat.id, message.message_id).wait() # some debug info
+                bot.send_message(message.chat.id, strings[lang(message)]['error']).wait()
+                track(botan_token, message.from_user.id, message, 'Error')
+        else:
+            return
 
     elif message.content_type is 'document' and \
             (message.document.mime_type == 'image/gif' or message.document.mime_type == 'video/mp4'):
