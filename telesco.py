@@ -54,7 +54,13 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
 
 def check_size(message):
     try:
-        if 'file is too big' in str(bot.get_file(message.document.file_id).wait()[1]):
+        if message.content_type is 'video':
+            if 'file is too big' in str(bot.get_file(message.video.file_id).wait()[1]):
+                bot.send_message(message.chat.id, strings[lang(message)]['size_handler'], parse_mode='Markdown').wait()
+                return 0
+            else:
+                return 1
+        elif 'file is too big' in str(bot.get_file(message.document.file_id).wait()[1]):
             bot.send_message(message.chat.id, strings[lang(message)]['size_handler'], parse_mode='Markdown').wait()
             return 0
         else:
