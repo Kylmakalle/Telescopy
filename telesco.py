@@ -119,7 +119,7 @@ def converting(message):
             return
 
     elif message.content_type is 'document' and message.document.mime_type == 'video/webm':
-        if message.from_user.id == me:
+        if str(message.from_user.id) == me:
             if check_size(message):
                 try:
                     status = bot.send_message(message.chat.id, strings[lang(message)]['downloading'],
