@@ -83,7 +83,7 @@ def welcome(message):
 def welcome(message):
     task = bot.send_message(message.chat.id, strings[lang(message)]['help'],
                             parse_mode='HTML', disable_web_page_preview=False)
-    track(botan_token, message.from_user.id, message, '/start')
+    track(botan_token, message.from_user.id, message, '/help')
     task.wait()
 
 
