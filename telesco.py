@@ -24,32 +24,34 @@ def lang(message):
         return 'en'
 
 
-strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я умею преобразовывать Видео и Гифки в круглые'
+strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я умею преобразовывать квадратные Видео в круглые'
                            ' <i>Видеосообщения</i>, просто отправь мне медиафайл.\n\n'
                            'Используй команду /help если у тебя есть вопросы.',
                   'error': 'Ой, что-то пошло не так, попоробуй другой файл',
-                  'content_error': 'Я поддерживаю только Видео или Гифики!',
-                  'text_handler': 'Отправь мне Видео или Гифку',
+                  'content_error': 'Я поддерживаю только квадратные Видео!',
+                  'text_handler': 'Отправь мне квадратное Видео',
                   'video_note_handler': 'Это и так <i>Видеосообщение!</i>',
                   'size_handler': 'Файл слишком большой!\nМаксимальный размер файла *20 MB!*',
                   'converting': '<i>Конвертирую</i> <code>{0:.2f}%</code>',
                   'downloading': '<i>Скачиваю файл...</i>',
                   'uploading': '<i>Колдую...</i>',
                   'webm': 'WebM формат пока не поддерживается 😓',
-                  'help': '<a href="http://telegra.ph/Telescopy-FAQ-Ru-05-21-3">FAQ</a>'},
-           'en': {'start': 'Greetings, {}!\nI am Telescopy and i can convert your Video or GIF to a round'
+                  'help': '<a href="http://telegra.ph/Telescopy-FAQ-Ru-05-21-3">FAQ</a>',
+                  'not_square': 'Это видео не квадратное (соотношение сторон 1:1)!'},
+           'en': {'start': 'Greetings, {}!\nI am Telescopy and i can convert your square Video to a round'
                            ' <i>Video Message</i>, just send me your media.\n\n'
                            'Use /help command if you have any questions.',
                   'error': 'Ooops, something went wrong, try another file',
-                  'content_error': 'I support only Videos and GIFs!',
-                  'text_handler': 'Send me Video or GIF',
+                  'content_error': 'I support only square Videos!',
+                  'text_handler': 'Send me square Video',
                   'video_note_handler': "It's already a <i>Video message!</i>",
                   'size_handler': 'File is too big!\nMaximum file size is *20 MB*',
                   'converting': '<i>Converting</i> <code>{0:.2f}%</code>',
                   'downloading': '<i>Downloading file...</i>',
                   'uploading': '<i>Doing some magic stuff...</i>',
                   'webm': 'WebMs are currently unsupported 😓',
-                  'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21-2">FAQ</a>'}}
+                  'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21-2">FAQ</a>',
+                  'not_square': "It's not a square video (1:1 Aspect ratio)!"}}
 
 
 def check_size(message):
@@ -67,6 +69,14 @@ def check_size(message):
             return 1
     except:
         return 1
+
+
+def check_dimensions(message):
+    if abs(message.video.height - message.video.width) in {0, 1}:
+        return 1
+    else:
+        bot.send_message(message.chat.id, strings[lang(message)]['not_square']).wait()
+        return 0
 
 
 @bot.message_handler(commands=['start'])
@@ -91,22 +101,26 @@ def welcome(message):
 def converting(message):
     if message.content_type is 'video':
         if check_size(message):
-            try:
-                videonote = bot.download_file((((bot.get_file(message.video.file_id)).wait()).file_path)).wait()
-                bot.send_chat_action(message.chat.id, 'record_video_note').wait()
-                bot.send_video_note(message.chat.id, videonote).wait()
-                track(botan_token, message.from_user.id, message, 'Convert')
-            except Exception as e:
-                bot.send_message(me, '`{}`'.format(e), parse_mode='Markdown').wait()
-                bot.forward_message(me, message.chat.id, message.message_id).wait()  # some debug info
-                bot.send_message(message.chat.id, strings[lang(message)]['error']).wait()
-                track(botan_token, message.from_user.id, message, 'Error')
+            if check_dimensions(message):
+                try:
+                    videonote = bot.download_file((((bot.get_file(message.video.file_id)).wait()).file_path)).wait()
+                    bot.send_chat_action(message.chat.id, 'record_video_note').wait()
+                    bot.send_video_note(message.chat.id, videonote).wait()
+                    track(botan_token, message.from_user.id, message, 'Convert')
+                except Exception as e:
+                    bot.send_message(me, '`{}`'.format(e), parse_mode='Markdown').wait()
+                    bot.forward_message(me, message.chat.id, message.message_id).wait()  # some debug info
+                    bot.send_message(message.chat.id, strings[lang(message)]['error']).wait()
+                    track(botan_token, message.from_user.id, message, 'Error')
+
         else:
             return
 
     elif message.content_type is 'document' and \
             (message.document.mime_type == 'image/gif' or message.document.mime_type == 'video/mp4'):
-        if check_size(message):
+        bot.send_message(message.chat.id, strings[lang(message)]['content_error'])
+        return
+        """if check_size(message):
             try:
                 videonote = bot.download_file((((bot.get_file(message.document.file_id)).wait()).file_path)).wait()
                 bot.send_chat_action(message.chat.id, 'record_video_note').wait()
@@ -116,7 +130,7 @@ def converting(message):
                 bot.send_message(message.chat.id, strings[lang(message)]['error']).wait()
                 track(botan_token, message.from_user.id, message, 'Error')
         else:
-            return
+            return"""
 
     elif message.content_type is 'document' and message.document.mime_type == 'video/webm':
         if str(message.from_user.id) == me:
