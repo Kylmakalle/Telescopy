@@ -31,7 +31,7 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
                   'content_error': 'Я поддерживаю только квадратные Видео!',
                   'text_handler': 'Отправь мне квадратное Видео',
                   'video_note_handler': 'Это и так <i>Видеосообщение!</i>',
-                  'size_handler': 'Файл слишком большой!\nМаксимальный размер файла *20 MB!*',
+                  'size_handler': 'Файл слишком большой!\nМаксимальный размер файла *8 MB!*',
                   'converting': '<i>Конвертирую</i> <code>{0:.2f}%</code>',
                   'downloading': '<i>Скачиваю файл...</i>',
                   'uploading': '<i>Колдую...</i>',
@@ -45,7 +45,7 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
                   'content_error': 'I support only square Videos!',
                   'text_handler': 'Send me square Video',
                   'video_note_handler': "It's already a <i>Video message!</i>",
-                  'size_handler': 'File is too big!\nMaximum file size is *20 MB*',
+                  'size_handler': 'File is too big!\nMaximum file size is *8 MB*',
                   'converting': '<i>Converting</i> <code>{0:.2f}%</code>',
                   'downloading': '<i>Downloading file...</i>',
                   'uploading': '<i>Doing some magic stuff...</i>',
@@ -55,20 +55,11 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
 
 
 def check_size(message):
-    try:
-        if message.content_type is 'video':
-            if 'file is too big' in str(bot.get_file(message.video.file_id).wait()[1]):
-                bot.send_message(message.chat.id, strings[lang(message)]['size_handler'], parse_mode='Markdown').wait()
-                return 0
-            else:
-                return 1
-        elif 'file is too big' in str(bot.get_file(message.document.file_id).wait()[1]):
-            bot.send_message(message.chat.id, strings[lang(message)]['size_handler'], parse_mode='Markdown').wait()
-            return 0
-        else:
-            return 1
-    except:
+    if message.video.file_size < 8000001:
         return 1
+    else:
+        bot.send_message(message.chat.id, strings[lang(message)]['size_handler'], parse_mode='Markdown').wait()
+        return 0
 
 
 def check_dimensions(message):
@@ -103,9 +94,13 @@ def converting(message):
         if check_size(message):
             if check_dimensions(message):
                 try:
+                    action = bot.send_chat_action(message.chat.id, 'record_video_note')
                     videonote = bot.download_file((((bot.get_file(message.video.file_id)).wait()).file_path)).wait()
-                    bot.send_chat_action(message.chat.id, 'record_video_note').wait()
-                    bot.send_video_note(message.chat.id, videonote).wait()
+                    if message.video.height < 640:
+                        bot.send_video_note(message.chat.id, videonote, length=message.video.height).wait()
+                    else:
+                        bot.send_video_note(message.chat.id, videonote).wait()
+                    action.wait()
                     track(botan_token, message.from_user.id, message, 'Convert')
                 except Exception as e:
                     bot.send_message(me, '`{}`'.format(e), parse_mode='Markdown').wait()
