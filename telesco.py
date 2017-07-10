@@ -55,7 +55,7 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
 
 
 def check_size(message):
-    if message.video.file_size < 8000001:
+    if message.video.file_size < 8389000:
         return 1
     else:
         bot.send_message(message.chat.id, strings[lang(message)]['size_handler'], parse_mode='Markdown').wait()
@@ -95,7 +95,7 @@ def converting(message):
             if check_dimensions(message):
                 try:
                     action = bot.send_chat_action(message.chat.id, 'record_video_note')
-                    videonote = bot.download_file((((bot.get_file(message.video.file_id)).wait()).file_path)).wait()
+                    videonote = bot.download_file(bot.get_file(message.video.file_id).wait().file_path).wait()
                     if message.video.height < 640:
                         bot.send_video_note(message.chat.id, videonote, length=message.video.height).wait()
                     else:
