@@ -15,19 +15,16 @@ bot = telebot.AsyncTeleBot(token)
 
 
 def lang(message):
-    if message.from_user.language_code is not None:
-        if 'ru' in message.from_user.language_code:
-            return 'ru'
-        else:
-            return 'en'
-    else:
-        return 'en'
+    if (message.from_user.language_code is not None and 
+            'ru' in message.from_user.language_code):
+        return 'ru'
+    return 'en'
 
 
 strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я умею преобразовывать квадратные Видео в круглые'
                            ' <i>Видеосообщения</i>, просто отправь мне медиафайл.\n\n'
                            'Используй команду /help если у тебя есть вопросы.',
-                  'error': 'Ой, что-то пошло не так, попоробуй другой файл',
+                  'error': 'Ой, что-то пошло не так, попробуй другой файл',
                   'content_error': 'Я поддерживаю только квадратные Видео!',
                   'text_handler': 'Отправь мне квадратное Видео',
                   'video_note_handler': 'Это и так <i>Видеосообщение!</i>',
@@ -55,19 +52,17 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
 
 
 def check_size(message):
-    if message.video.file_size < 8389000:
-        return 1
-    else:
-        bot.send_message(message.chat.id, strings[lang(message)]['size_handler'], parse_mode='Markdown').wait()
-        return 0
-
+    if message.video.file_size >= 8389000:
+        bot.send_message(message.chat.id, 
+                         strings[lang(message)]['size_handler'], 
+                         parse_mode='Markdown').wait()
+    return message.video.file_size < 8389000
 
 def check_dimensions(message):
-    if abs(message.video.height - message.video.width) in {0, 1}:
-        return 1
-    else:
-        bot.send_message(message.chat.id, strings[lang(message)]['not_square']).wait()
-        return 0
+    if abs(message.video.height - message.video.width) not in {0, 1}:
+        bot.send_message(message.chat.id, 
+                         strings[lang(message)]['not_square']).wait()
+    return abs(message.video.height - message.video.width) in {0, 1}
 
 
 @bot.message_handler(commands=['start'])
@@ -107,12 +102,10 @@ def converting(message):
                     bot.forward_message(me, message.chat.id, message.message_id).wait()  # some debug info
                     bot.send_message(message.chat.id, strings[lang(message)]['error']).wait()
                     track(botan_token, message.from_user.id, message, 'Error')
-
-        else:
-            return
-
+        return
     elif message.content_type is 'document' and \
-            (message.document.mime_type == 'image/gif' or message.document.mime_type == 'video/mp4'):
+            (message.document.mime_type == 'image/gif' or 
+             message.document.mime_type == 'video/mp4'):
         bot.send_message(message.chat.id, strings[lang(message)]['content_error'])
         return
         """if check_size(message):
@@ -127,12 +120,15 @@ def converting(message):
         else:
             return"""
 
-    elif message.content_type is 'document' and message.document.mime_type == 'video/webm':
+    elif (message.content_type is 'document' and 
+            message.document.mime_type == 'video/webm'):
         if str(message.from_user.id) == me:
             if check_size(message):
                 try:
-                    status = bot.send_message(message.chat.id, strings[lang(message)]['downloading'],
-                                              parse_mode='HTML').wait()
+                    status = bot.send_message(
+                        message.chat.id, 
+                        strings[lang(message)]['downloading'],
+                        parse_mode='HTML').wait()
                     api = cloudconvert.Api(cloud_convert_token)
                     process = api.convert({
                         'inputformat': 'webm',
