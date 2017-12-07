@@ -70,8 +70,8 @@ def welcome(message):
     task = bot.send_message(message.chat.id, strings[lang(message)]['start'].format(
         message.from_user.first_name, 'https://telegram.org/update'),
                             parse_mode='HTML', disable_web_page_preview=True)
-    track(botan_token, message.from_user.id, message, '/start')
-    track(botan_token, message.from_user.id, message, lang(message))
+    # track(botan_token, message.from_user.id, message, '/start')
+    # track(botan_token, message.from_user.id, message, lang(message))
     task.wait()
 
 
@@ -79,7 +79,7 @@ def welcome(message):
 def welcome(message):
     task = bot.send_message(message.chat.id, strings[lang(message)]['help'],
                             parse_mode='HTML', disable_web_page_preview=False)
-    track(botan_token, message.from_user.id, message, '/help')
+    # track(botan_token, message.from_user.id, message, '/help')
     task.wait()
 
 
@@ -96,12 +96,12 @@ def converting(message):
                     else:
                         bot.send_video_note(message.chat.id, videonote).wait()
                     action.wait()
-                    track(botan_token, message.from_user.id, message, 'Convert')
+                    # track(botan_token, message.from_user.id, message, 'Convert')
                 except Exception as e:
                     bot.send_message(me, '`{}`'.format(e), parse_mode='Markdown').wait()
                     bot.forward_message(me, message.chat.id, message.message_id).wait()  # some debug info
                     bot.send_message(message.chat.id, strings[lang(message)]['error']).wait()
-                    track(botan_token, message.from_user.id, message, 'Error')
+                    # track(botan_token, message.from_user.id, message, 'Error')
         return
     elif message.content_type is 'document' and \
             (message.document.mime_type == 'image/gif' or 
@@ -164,7 +164,7 @@ def converting(message):
                     os.remove(file)
                 except:
                     bot.send_message(message.chat.id, strings[lang(message)]['error']).wait()
-                    track(botan_token, message.from_user.id, message, 'Error')
+                    # track(botan_token, message.from_user.id, message, 'Error')
             else:
                 return
         else:
