@@ -22,8 +22,8 @@ def lang(message):
           'de' in message.from_user.language_code):
         return 'de'
     elif (message.from_user.language_code is not None and
-          'de' in message.from_user.language_code):
-        return 'de'
+          'fa' in message.from_user.language_code):
+        return 'fa'
     return 'en'
 
 
