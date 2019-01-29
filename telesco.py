@@ -68,7 +68,7 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
                    'uploading': '<i>Mache magische Sachen...</i>',
                    'webm': 'WebMs sind aktuell nicht unterstützt 😓',
                    'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21-2">FAQ</a>',
-                   'not_square': "Es ist kein quadratisches Video (1:1 Aspect ratio)!"}
+                   'not_square': "Es ist kein quadratisches Video (1:1 Aspect ratio)!"},
            'fa': {'start': """تحية طيبة، {}!
 أنا تلسكوبي ويمكنني تحويل الفيديو الخاص بك مربع إلى <i> رسالة فيديو </i> ، فقط أرسل لي وسائل الإعلام الخاصة بك.
 
