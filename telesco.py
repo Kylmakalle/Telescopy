@@ -22,8 +22,8 @@ def lang(message):
           'de' in message.from_user.language_code):
         return 'de'
     elif (message.from_user.language_code is not None and
-          'fa' in message.from_user.language_code):
-        return 'fa'
+          'ar' in message.from_user.language_code):
+        return 'ar'
     return 'en'
 
 
@@ -69,7 +69,7 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
                    'webm': 'WebMs sind aktuell nicht unterstützt 😓',
                    'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21-2">FAQ</a>',
                    'not_square': "Es ist kein quadratisches Video (1:1 Aspect ratio)!"},
-           'fa': {'start': """تحية طيبة، {}!
+           'ar': {'start': """تحية طيبة، {}!
 أنا تلسكوبي ويمكنني تحويل الفيديو الخاص بك مربع إلى <i> رسالة فيديو </i> ، فقط أرسل لي وسائل الإعلام الخاصة بك.
 
 استخدم /help الأمر إذا كان لديك أي أسئلة.""",
