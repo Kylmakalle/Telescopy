@@ -69,20 +69,21 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
                    'webm': 'WebMs sind aktuell nicht unterstützt 😓',
                    'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21-2">FAQ</a>',
                    'not_square': "Es ist kein quadratisches Video (1:1 Aspect ratio)!"}
-           'fa': {'start': 'Hallo, {}!\n Ich bin Telescopy und ich kann dein quadratisches Video zu einer runden'
-                            ' <i>Videonachricht</i> konvertieren. Sende mir einfach deine Medien.\n\n'
-                            'Benutze einfach /help, wenn du irgendwelche Fragen hast.',
-                   'error': 'Ooops, irgendwas ist schief gelaufen, probier eine andere Datei',
-                   'content_error': 'Ich unterstütze nur quadratische Videos!',
-                   'text_handler': 'Sende mir ein quadratisches Video',
-                   'video_note_handler': "Es ist schon eine <i>Videonachricht!</i>",
-                   'size_handler': 'Die Datei ist zu groß!\nDie Maximumgröße ist *8 MB*',
-                   'converting': '<i>Konvertiere</i> <code>{0:.2f}%</code>',
-                   'downloading': '<i>Downloade die Datei...</i>',
-                   'uploading': '<i>Mache magische Sachen...</i>',
-                   'webm': 'WebMs sind aktuell nicht unterstützt 😓',
-                   'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21-2">FAQ</a>',
-                   'not_square': "Es ist kein quadratisches Video (1:1 Aspect ratio)!"}}
+           'fa': {'start': """تحية طيبة، {}!
+أنا تلسكوبي ويمكنني تحويل الفيديو الخاص بك مربع إلى <i> رسالة فيديو </i> ، فقط أرسل لي وسائل الإعلام الخاصة بك.
+
+استخدم /help الأمر إذا كان لديك أي أسئلة.""",
+                  'error': 'عفوًا ، حدث خطأ ما ، جرب ملفًا آخر',
+                  'content_error': 'أنا أدعم فقط أشرطة الفيديو مربع!',
+                  'text_handler': 'أرسل لي مربع الفيديو',
+                  'video_note_handler': "إنها بالفعل <i>رسالة فيديو</i> !",
+                  'size_handler': 'الملف كبير جدًا! \n أقصى حجم للملف هو * 8 ميغابايت *',
+                  'converting': '<i>Converting</i> <code>{0:.2f}%</code>',
+                  'downloading': '<i>Downloading file...</i>',
+                  'uploading': '<i>Doing some magic stuff...</i>',
+                  'webm': 'WebMs غير مدعومة حاليا 😓',
+                  'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21-2">FAQ</a>',
+                  'not_square': "انها ليست فيديو مربع (1: 1 نسبة الارتفاع)!"}}
 
 
 def check_size(message):
