@@ -21,6 +21,9 @@ def lang(message):
     elif (message.from_user.language_code is not None and
           'de' in message.from_user.language_code):
         return 'de'
+    elif (message.from_user.language_code is not None and
+          'de' in message.from_user.language_code):
+        return 'de'
     return 'en'
 
 
@@ -51,11 +54,25 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
                   'uploading': '<i>Doing some magic stuff...</i>',
                   'webm': 'WebMs are currently unsupported 😓',
                   'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21-2">FAQ</a>',
-                  'not_square': "It's not a square video (1:1 Aspect ratio)!"}}
+                  'not_square': "It's not a square video (1:1 Aspect ratio)!"},
            'de': {'start': 'Hallo, {}!\n Ich bin Telescopy und ich kann dein quadratisches Video zu einer runden'
                             ' <i>Videonachricht</i> konvertieren. Sende mir einfach deine Medien.\n\n'
                             'Benutze einfach /help, wenn du irgendwelche Fragen hast.',
-                  'error': 'Ooops, irgendwas ist schief gelaufen, probier eine andere Datei',
+                   'error': 'Ooops, irgendwas ist schief gelaufen, probier eine andere Datei',
+                   'content_error': 'Ich unterstütze nur quadratische Videos!',
+                   'text_handler': 'Sende mir ein quadratisches Video',
+                   'video_note_handler': "Es ist schon eine <i>Videonachricht!</i>",
+                   'size_handler': 'Die Datei ist zu groß!\nDie Maximumgröße ist *8 MB*',
+                   'converting': '<i>Konvertiere</i> <code>{0:.2f}%</code>',
+                   'downloading': '<i>Downloade die Datei...</i>',
+                   'uploading': '<i>Mache magische Sachen...</i>',
+                   'webm': 'WebMs sind aktuell nicht unterstützt 😓',
+                   'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21-2">FAQ</a>',
+                   'not_square': "Es ist kein quadratisches Video (1:1 Aspect ratio)!"}
+           'fa': {'start': 'Hallo, {}!\n Ich bin Telescopy und ich kann dein quadratisches Video zu einer runden'
+                            ' <i>Videonachricht</i> konvertieren. Sende mir einfach deine Medien.\n\n'
+                            'Benutze einfach /help, wenn du irgendwelche Fragen hast.',
+                   'error': 'Ooops, irgendwas ist schief gelaufen, probier eine andere Datei',
                    'content_error': 'Ich unterstütze nur quadratische Videos!',
                    'text_handler': 'Sende mir ein quadratisches Video',
                    'video_note_handler': "Es ist schon eine <i>Videonachricht!</i>",
