@@ -24,6 +24,9 @@ def lang(message):
     elif (message.from_user.language_code is not None and
           'ar' in message.from_user.language_code):
         return 'ar'
+    elif (message.from_user.language_code is not None and
+          'fa' in message.from_user.language_code):
+        return 'fa'
     return 'en'
 
 
@@ -83,7 +86,22 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
                   'uploading': '<i>Doing some magic stuff...</i>',
                   'webm': 'WebMs غير مدعومة حاليا 😓',
                   'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21-2">FAQ</a>',
-                  'not_square': "انها ليست فيديو مربع (1: 1 نسبة الارتفاع)!"}}
+                  'not_square': "انها ليست فيديو مربع (1: 1 نسبة الارتفاع)!"},
+           'fa': {'start': """با درود، {}!
+من تلسکوپی هستم و می توانم ویدیوی مربع شما را به یک دور <i> پیام ویدیویی </i> تبدیل کنم، فقط رسانه های خود را بفرستید
+
+اگر سوالی دارید، از دستور /help استفاده کنید.""",
+                  'error': 'اووپ، چیزی اشتباه گرفته شد، فایل دیگری را امتحان کنید',
+                  'content_error': 'من فقط از فیلم های مربع پشتیبانی می کنم!',
+                  'text_handler': 'مربع ویدئو را به من بفرست',
+                  'video_note_handler': "این یک پیام <i> ویدیویی است! </i>",
+                  'size_handler': 'پرونده خیلی بزرگ است!\nحداکثر اندازه فایل* 8 MB است*',
+                  'converting': '<i>Converting</i> <code>{0:.2f}%</code>',
+                  'downloading': '<i>Downloading file...</i>',
+                  'uploading': '<i>Doing some magic stuff...</i>',
+                  'webm': 'WebMs در حال حاضر پشتیبانی نشده 😓',
+                  'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21-2">FAQ</a>',
+                  'not_square': "این ویدیو مربعی نیست (نسبت تصویر 1: 1)!"}}
 
 
 def check_size(message):
