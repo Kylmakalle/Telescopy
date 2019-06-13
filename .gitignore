@@ -3,3 +3,6 @@
 
 # Ignore api tokens
 set_env.sh
+
+.idea
+.env

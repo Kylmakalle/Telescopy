@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 import os
 import telebot
-import cloudconvert
+# import cloudconvert
 import ujson
 import requests
-from botan import track
+from mixpanel import Mixpanel  # from botan import track
 
 token = os.environ['TELEGRAM_TOKEN']
-botan_token = os.environ['APPMETRICA_TOKEN']
-cloud_convert_token = os.environ['CLOUD_CONVERT_TOKEN']
-me = os.environ['CREATOR_ID']
+mp = Mixpanel(os.environ['MIXPANEL_TOKEN'])  # botan_token = os.environ['APPMETRICA_TOKEN']
+# cloud_convert_token = os.environ['CLOUD_CONVERT_TOKEN']
+# me = os.environ['CREATOR_ID']
 
 bot = telebot.AsyncTeleBot(token)
 
 
 def lang(message):
-    if (message.from_user.language_code is not None and 
+    if (message.from_user.language_code is not None and
             'ru' in message.from_user.language_code):
         return 'ru'
     elif (message.from_user.language_code is not None and
@@ -56,19 +56,19 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
                   'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21-2">FAQ</a>',
                   'not_square': "It's not a square video (1:1 Aspect ratio)!"},
            'de': {'start': 'Hallo, {}!\n Ich bin Telescopy und ich kann dein quadratisches Video zu einer runden'
-                            ' <i>Videonachricht</i> konvertieren. Sende mir einfach deine Medien.\n\n'
-                            'Benutze einfach /help, wenn du irgendwelche Fragen hast.',
-                   'error': 'Ooops, irgendwas ist schief gelaufen, probier eine andere Datei',
-                   'content_error': 'Ich unterstütze nur quadratische Videos!',
-                   'text_handler': 'Sende mir ein quadratisches Video',
-                   'video_note_handler': "Es ist schon eine <i>Videonachricht!</i>",
-                   'size_handler': 'Die Datei ist zu groß!\nDie Maximumgröße ist *8 MB*',
-                   'converting': '<i>Konvertiere</i> <code>{0:.2f}%</code>',
-                   'downloading': '<i>Downloade die Datei...</i>',
-                   'uploading': '<i>Mache magische Sachen...</i>',
-                   'webm': 'WebMs sind aktuell nicht unterstützt 😓',
-                   'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21-2">FAQ</a>',
-                   'not_square': "Es ist kein quadratisches Video (1:1 Aspect ratio)!"},
+                           ' <i>Videonachricht</i> konvertieren. Sende mir einfach deine Medien.\n\n'
+                           'Benutze einfach /help, wenn du irgendwelche Fragen hast.',
+                  'error': 'Ooops, irgendwas ist schief gelaufen, probier eine andere Datei',
+                  'content_error': 'Ich unterstütze nur quadratische Videos!',
+                  'text_handler': 'Sende mir ein quadratisches Video',
+                  'video_note_handler': "Es ist schon eine <i>Videonachricht!</i>",
+                  'size_handler': 'Die Datei ist zu groß!\nDie Maximumgröße ist *8 MB*',
+                  'converting': '<i>Konvertiere</i> <code>{0:.2f}%</code>',
+                  'downloading': '<i>Downloade die Datei...</i>',
+                  'uploading': '<i>Mache magische Sachen...</i>',
+                  'webm': 'WebMs sind aktuell nicht unterstützt 😓',
+                  'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21-2">FAQ</a>',
+                  'not_square': "Es ist kein quadratisches Video (1:1 Aspect ratio)!"},
            'ar': {'start': """تحية طيبة، {}!
 أنا تلسكوبي ويمكنني تحويل الفيديو الخاص بك مربع إلى <i> رسالة فيديو </i> ، فقط أرسل لي وسائل الإعلام الخاصة بك.
 
@@ -88,14 +88,15 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
 
 def check_size(message):
     if message.video.file_size >= 8389000:
-        bot.send_message(message.chat.id, 
-                         strings[lang(message)]['size_handler'], 
+        bot.send_message(message.chat.id,
+                         strings[lang(message)]['size_handler'],
                          parse_mode='Markdown').wait()
     return message.video.file_size < 8389000
 
+
 def check_dimensions(message):
     if abs(message.video.height - message.video.width) not in {0, 1}:
-        bot.send_message(message.chat.id, 
+        bot.send_message(message.chat.id,
                          strings[lang(message)]['not_square']).wait()
     return abs(message.video.height - message.video.width) in {0, 1}
 
@@ -105,6 +106,7 @@ def welcome(message):
     task = bot.send_message(message.chat.id, strings[lang(message)]['start'].format(
         message.from_user.first_name, 'https://telegram.org/update'),
                             parse_mode='HTML', disable_web_page_preview=True)
+    mp.track(message.from_user.id, 'start', properties={'language': message.from_user.language_code})
     # track(botan_token, message.from_user.id, message, '/start')
     # track(botan_token, message.from_user.id, message, lang(message))
     task.wait()
@@ -114,6 +116,7 @@ def welcome(message):
 def welcome(message):
     task = bot.send_message(message.chat.id, strings[lang(message)]['help'],
                             parse_mode='HTML', disable_web_page_preview=False)
+    mp.track(message.from_user.id, 'help', properties={'language': message.from_user.language_code})
     # track(botan_token, message.from_user.id, message, '/help')
     task.wait()
 
@@ -131,15 +134,17 @@ def converting(message):
                     else:
                         bot.send_video_note(message.chat.id, videonote).wait()
                     action.wait()
+                    mp.track(message.from_user.id, 'convert', properties={'language': message.from_user.language_code})
                     # track(botan_token, message.from_user.id, message, 'Convert')
                 except Exception as e:
-                    bot.send_message(me, '`{}`'.format(e), parse_mode='Markdown').wait()
-                    bot.forward_message(me, message.chat.id, message.message_id).wait()  # some debug info
+                    # bot.send_message(me, '`{}`'.format(e), parse_mode='Markdown').wait()
+                    # bot.forward_message(me, message.chat.id, message.message_id).wait()  # some debug info
                     bot.send_message(message.chat.id, strings[lang(message)]['error']).wait()
+                    mp.track(message.from_user.id, 'error', properties={'error': str(e)})
                     # track(botan_token, message.from_user.id, message, 'Error')
         return
     elif message.content_type is 'document' and \
-            (message.document.mime_type == 'image/gif' or 
+            (message.document.mime_type == 'image/gif' or
              message.document.mime_type == 'video/mp4'):
         bot.send_message(message.chat.id, strings[lang(message)]['content_error'])
         return
@@ -155,9 +160,10 @@ def converting(message):
         else:
             return"""
 
-    elif (message.content_type is 'document' and 
-            message.document.mime_type == 'video/webm'):
-        if str(message.from_user.id) == me:
+    elif (message.content_type is 'document' and
+          message.document.mime_type == 'video/webm'):
+        if False:  # if str(message.from_user.id) == me:
+            """
             if check_size(message):
                 try:
                     status = bot.send_message(
@@ -202,6 +208,7 @@ def converting(message):
                     # track(botan_token, message.from_user.id, message, 'Error')
             else:
                 return
+            """
         else:
             bot.send_message(message.chat.id, strings[lang(message)]['webm'], parse_mode='HTML').wait()
 
