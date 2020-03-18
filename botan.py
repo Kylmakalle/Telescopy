@@ -2,7 +2,7 @@
 # Modified for pyTelegramBotAPI (https://github.com/eternnoir/pyTelegramBotAPI/)
 
 import logging
-import ujson
+import json
 
 import requests
 from telebot import types
@@ -18,7 +18,7 @@ def make_json(msg):
     """
     if isinstance(msg, types.CallbackQuery):
         try:
-            return ujson.dumps(msg)
+            return json.dumps(msg)
         except Exception as ex:
             logging.error(
                 "Exception of type {ex_type!s} in botan_s make_json (call): {ex_reason!s}".format(ex_type=type(ex),
@@ -27,7 +27,7 @@ def make_json(msg):
         try:
             if msg is None:
                 return None
-            return ujson.dumps(msg)
+            return json.dumps(msg)
         except Exception as ex:
             logging.error(
                 "Exception of type {ex_type!s} in botan_s make_json (message): {ex_reason!s}".format(ex_type=type(ex),
