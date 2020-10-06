@@ -22,6 +22,9 @@ def lang(message):
           'de' in message.from_user.language_code):
         return 'de'
     elif (message.from_user.language_code is not None and
+          'tr' in message.from_user.language_code):
+        return 'tr'
+    elif (message.from_user.language_code is not None and
           'ar' in message.from_user.language_code):
         return 'ar'
     elif (message.from_user.language_code is not None and
@@ -72,6 +75,20 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
                   'webm': 'WebMs sind aktuell nicht unterstützt 😓',
                   'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21-2">FAQ</a>',
                   'not_square': "Es ist kein quadratisches Video (1:1 Aspect ratio)!"},
+           'tr': {'start': 'Merhaba, {}!\nBen Telescopy ve kare videonu yuvarlak'
+                           ' <i>Video Mesaja</i> dönüştürebilirim, sadece medyanı gönder.\n\n'
+                           'Herhangi bir sorun varsa, /help komutunu kullan.',
+                  'error': 'Ups, bir şeyler ters gitti, başka bir doya dene',
+                  'content_error': 'Sadece kare Videoları destekliyorum!',
+                  'text_handler': 'Bana kare Video gönder',
+                  'video_note_handler': "Bu zaten bir <i>Video mesaj!</i>",
+                  'size_handler': 'Dosya çok büyük!\nMaksimum dosya boyutu *8 MB*',
+                  'converting': '<i>Dönüştürülüyor</i> <code>{0:.2f}%</code>',
+                  'downloading': '<i>Dosya indiriliyor...</i>',
+                  'uploading': '<i>Birkaç sihirli şey yapılıyor...</i>',
+                  'webm': 'WebM şu anda desteklenmiyor 😓',
+                  'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21-2">SSS</a>',
+                  'not_square': "Bu kare video (1:1 en-boy oranı) değil!"},
            'ar': {'start': """تحية طيبة، {}!
 أنا تلسكوبي ويمكنني تحويل الفيديو الخاص بك مربع إلى <i> رسالة فيديو </i> ، فقط أرسل لي وسائل الإعلام الخاصة بك.
 
