@@ -87,7 +87,7 @@ strings = {'ru': {'start': 'Приветствую, {}!\nЯ Telescopy и я ум
                   'downloading': '<i>Dosya indiriliyor...</i>',
                   'uploading': '<i>Birkaç sihirli şey yapılıyor...</i>',
                   'webm': 'WebM şu anda desteklenmiyor 😓',
-                  'help': '<a href="http://telegra.ph/Telescopy-FAQ-En-05-21-2">SSS</a>',
+                  'help': '<a href="https://telegra.ph/Telescopy-FAQ-TR-10-06">SSS</a>',
                   'not_square': "Bu kare video (1:1 en-boy oranı) değil!"},
            'ar': {'start': """تحية طيبة، {}!
 أنا تلسكوبي ويمكنني تحويل الفيديو الخاص بك مربع إلى <i> رسالة فيديو </i> ، فقط أرسل لي وسائل الإعلام الخاصة بك.
